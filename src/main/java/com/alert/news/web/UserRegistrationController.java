@@ -23,8 +23,8 @@ import com.alert.news.service.UserRegistrationService;
  * @author Shivaji Pote
  *
  */
-@RestController("/register")
-public class RegisterUsersController {
+@RestController
+public class UserRegistrationController {
 
 	/**
 	 * user registration service instance
@@ -43,7 +43,7 @@ public class RegisterUsersController {
 	 * @throws UserRegistrationException if something goes wrong while registering
 	 *                                   user
 	 */
-	@PostMapping
+	@PostMapping("/registeruser")
 	public ResponseEntity<String> registerUser(@RequestBody User user) throws UserRegistrationException {
 		userRegistrationServiceImpl.registerUser(Optional.of(user));
 		return new ResponseEntity<>("Registration successful", HttpStatus.OK);

@@ -5,3 +5,11 @@ CREATE TABLE IF NOT EXISTS NewsAlerts.user (
 	mobile_number bigint PRIMARY KEY,
 	subscription_categories text
 ) WITH comment = 'User registrations';
+
+CREATE TABLE IF NOT EXISTS NewsAlerts.Organisation_Campaign (
+	id bigint primary key,
+	organisation_name text,
+	campaign_title text,
+	campaign_description text,
+	tagged_categories text
+) WITH comment = 'Organisation campaigns';
