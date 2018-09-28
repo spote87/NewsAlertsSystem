@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.alert.news.exception.UserRegistrationException;
 import com.alert.news.model.User;
@@ -58,8 +59,8 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
 	 * @return true if all mandatory fields are present, false otherwise
 	 */
 	private boolean isValidUser(final User user) {
-		return (user.getMobileNumber() != null && user.getUserName() != null
-				&& user.getSubscriptionCategories() != null);
+		return (user.getMobileNumber() != null && !StringUtils.isEmpty(user.getUserName()) 
+				&& !StringUtils.isEmpty(user.getSubscriptionCategories()));
 	}
 
 }

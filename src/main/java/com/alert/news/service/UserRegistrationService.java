@@ -9,7 +9,7 @@ import com.alert.news.exception.UserRegistrationException;
 import com.alert.news.model.User;
 
 /**
- * User registration service interface
+ * User registration service interface.
  * 
  * @author Shivaji Pote
  *

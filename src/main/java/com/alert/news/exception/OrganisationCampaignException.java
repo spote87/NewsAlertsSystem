@@ -1,5 +1,5 @@
 /**
- * 
+ * Copyright : No copyright
  */
 package com.alert.news.exception;
 
@@ -10,30 +10,30 @@ import lombok.Setter;
  * @author Shivaji Pote
  *
  */
-@Getter
 @Setter
-public class UserRegistrationException extends Exception {
+@Getter
+public class OrganisationCampaignException extends Exception {
 
 	/**
 	 * serial version id
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String message;
 
 	/**
 	 * default constructor
 	 */
-	public UserRegistrationException() {
+	public OrganisationCampaignException() {
 		super();
 	}
 
-	
 	/**
-	 * @param message
+	 * Prameterized constructor with exception message
+	 * 
+	 * @param message exception message
 	 */
-	public UserRegistrationException(final String message) {
-		super(message);
+	public OrganisationCampaignException(final String message) {
 		this.message = message;
 	}
 

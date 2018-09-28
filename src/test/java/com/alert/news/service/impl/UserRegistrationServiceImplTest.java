@@ -40,7 +40,6 @@ public class UserRegistrationServiceImplTest {
 	@Test
 	public void testRegisterUserForValidUserData() throws UserRegistrationException {
 		final User user = new User(9370912801L, "shivaji.pote", "Banking, Finance");
-		//Mockito.when(userRepository.insert(user)).thenReturn(user);
 		final Optional<User> optionalUser = Optional.of(user);
 		userRegistrationServiceImpl.registerUser(optionalUser);
 		Mockito.verify(userRepository, Mockito.times(1)).insert(user);

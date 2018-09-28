@@ -1,10 +1,11 @@
 # NewsAlertsSystem
 This application sends news alerts to subscribed users. Since this is spring boot application, it can be launched by simply running NewsAlertsSystemApp.java
 
-WIP: Application is not yet fully ready. Only user subscription part is ready which can be tested by calling registration REST service 
+WIP: Application is not yet fully ready. Only below 2 services are implemented :
+1. User subscription which can be tested by calling registration REST service 
 
-	URI: /NewsAlertsSystem/register
-	e.g: http://localhost:8080/NewsAlertsSystem/register
+	URI: /NewsAlertsSystem/registeruser
+	e.g: http://localhost:8080/NewsAlertsSystem/registeruser
 	
 This is POST request. We need to pass user details in request body. 
 
@@ -13,4 +14,21 @@ This is POST request. We need to pass user details in request body.
 			"userName" : "shivaji.pote",
 			"subscriptionCategories" : "Finance, Banking"
 		}
-Pleas note: before testing above service, user needs to run cassandra DDL queries present in cassandra/ddl.cql
+
+2. Organization campaign service which can be tested by calling below REST URI
+	
+	 URI :  /NewsAlertsSystem/registercampain
+	 e.g: 	http://localhost:8080/NewsAlertsSystem/registercampain
+ 
+This is POST request. We need to pass campaign details in request body
+	
+	e.g:
+		{
+			"orgnisationName" : "ABC org",
+			"campaignTitle" : "LIC introduced new policy",
+			"campaignDescription" : "This is term plan with sum assured 2cr",
+			"taggedCategories" : "policies"
+		}
+
+	
+Pleas note: before testing above services, user needs to run cassandra DDL queries present in cassandra/ddl.cql

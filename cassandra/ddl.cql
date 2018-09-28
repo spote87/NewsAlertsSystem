@@ -12,4 +12,4 @@ CREATE TABLE IF NOT EXISTS NewsAlerts.Organisation_Campaign (
 	campaign_title text,
 	campaign_description text,
 	tagged_categories text
-) WITH comment = 'Organisation campaigns';
+) WITH comment = 'Organization campaigns';

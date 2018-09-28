@@ -1,5 +1,5 @@
 /**
- * 
+ * Copyrights: No copyrights
  */
 package com.alert.news.model;
 
@@ -14,7 +14,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @author qx13ip
+ * This is model class for organization campaign.
+ * 
+ * @author Shivaji Pote
  *
  */
 @Getter
@@ -22,44 +24,65 @@ import lombok.ToString;
 @ToString
 @Table("Organisation_Campaign")
 public class OrganisationCampaign {
-	
-	private static AtomicInteger counter;
-	
+
+	/**
+	 * Auto increment counter field for id
+	 */
+	private static AtomicInteger counter = new AtomicInteger();
+
+	/**
+	 * campaign id
+	 */
 	@PrimaryKey("id")
 	private Long campaignId;
-	
+
+	/**
+	 * name of the organisation
+	 */
 	@Column("organisation_name")
 	private String orgnisationName;
-	
+
+	/**
+	 * title of campaign
+	 */
 	@Column("campaign_title")
 	private String campaignTitle;
-	
+
+	/**
+	 * description of the campaign
+	 */
 	@Column("campaign_description")
 	private String campaignDescription;
-	
+
+	/**
+	 * Campaign categories
+	 */
 	@Column("tagged_categories")
 	private String taggedCategories;
-	
+
 	/**
-	 * 
+	 * Default constructor. This will initialize campaign if to 1.
 	 */
 	public OrganisationCampaign() {
 		this.campaignId = (long) counter.incrementAndGet();
 	}
 
 	/**
-	 * @param orgnisationName
-	 * @param campainTitle
-	 * @param campainDescription
-	 * @param taggedCategories
+	 * Parameterized constructor. This will initialize campaign id to 1 and other
+	 * fields to passed parameters.
+	 * 
+	 * @param orgnisationName    name of the organisation
+	 * @param campainTitle       title of the campaign
+	 * @param campainDescription description if the campaign
+	 * @param taggedCategories   tagged categories
 	 */
-	public OrganisationCampaign(String orgnisationName, String campainTitle, String campainDescription,
-			String taggedCategories) {
+	public OrganisationCampaign(final String orgnisationName, final String campainTitle,
+			final String campainDescription, final String taggedCategories) {
 		this.campaignId = (long) counter.incrementAndGet();
 		this.orgnisationName = orgnisationName;
 		this.campaignTitle = campainTitle;
 		this.campaignDescription = campainDescription;
 		this.taggedCategories = taggedCategories;
 	}
-	
+
 }
