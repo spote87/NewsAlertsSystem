@@ -1,21 +1,30 @@
-# NewsAlertsSystem
+# **NewsAlertsSystem**
 This application sends news alerts to subscribed users. Since this is spring boot application, it can be launched by simply running NewsAlertsSystemApp.java
+Set below 2 environment variables:
 
-WIP: Application is not yet fully ready. Only below 2 services are implemented :
-1. User subscription which can be tested by calling registration REST service 
+1. TWILIO_ACCOUNT_SID : your_twilio_account_SID
+2. TWILIO_AUTH_TOKEN : your_twilio_auth_token
 
+This application has 3 main processes like below:
+
+1. User subscription:
+    User can subscribe to news alerts by calling below REST service.
+    
+    
 	URI: /NewsAlertsSystem/registeruser
 	e.g: http://localhost:8080/NewsAlertsSystem/registeruser
 	
 This is POST request. We need to pass user details in request body. 
 
 	e.g: {
-			"mobileNumber" : "9370912801",
-			"userName" : "shivaji.pote",
-			"subscriptionCategories" : "Finance, Banking"
-		}
+         	"mobileNumber" : "9874563210",
+         	"userName" : "shivaji.pote",
+         	"subscriptionCategories" : ["Finance", "Banking"]
+         }
 
-2. Organization campaign service which can be tested by calling below REST URI
+2. Organization campaign registration:
+    Organisations can publish their campaigns by calling below service.
+    
 	
 	 URI :  /NewsAlertsSystem/registercampain
 	 e.g: 	http://localhost:8080/NewsAlertsSystem/registercampain
@@ -24,11 +33,14 @@ This is POST request. We need to pass campaign details in request body
 	
 	e.g:
 		{
-			"orgnisationName" : "ABC org",
-			"campaignTitle" : "LIC introduced new policy",
-			"campaignDescription" : "This is term plan with sum assured 2cr",
-			"taggedCategories" : "policies"
-		}
+        	"orgnisationName" : "Test Org",
+        	"campaignTitle" : "Test title",
+        	"campaignDescription" : "Test description",
+        	"taggedCategories" : ["Tagged", "categories"]
+        }
 
+3. Send SMS to registered users:
+    Once organisations publish their news, it will be saved in cassandra database and will be sent to registered users. 
+    Also there is on scheduled job which runs once a day and sends news alerts to user if there are any news with status "New"
 	
-Pleas note: before testing above services, user needs to run cassandra DDL queries present in cassandra/ddl.cql
+**Pleas note:** Before testing above services, user needs to start cassandra DB server and run cassandra DDL queries present in _cassandra/ddl.cql_

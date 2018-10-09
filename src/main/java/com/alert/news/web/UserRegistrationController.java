@@ -1,9 +1,4 @@
-/**
- * 
- */
 package com.alert.news.web;
-
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,40 +7,39 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alert.news.exception.UserRegistrationException;
+import com.alert.news.exception.UserException;
 import com.alert.news.model.User;
-import com.alert.news.service.UserRegistrationService;
+import com.alert.news.service.UserService;
 
 /**
  * This is REST controller for registering users to different categories to get
  * news alerts.
- * 
- * @author Shivaji Pote
  *
+ * @author Shivaji Pote
  */
 @RestController
 public class UserRegistrationController {
 
-	/**
-	 * user registration service instance
-	 */
-	@Autowired
-	private UserRegistrationService userRegistrationServiceImpl;
+    /**
+     * user registration service instance
+     */
+    @Autowired
+    private UserService userServiceImpl;
 
-	/**
-	 * <em>POST</em> method which will call {@link #registerUser(User)} from
-	 * {@link UserRegistrationService} to register user for specifier categories
-	 * news alerts.
-	 * 
-	 * @param user instance of {@link User} which passed by user as a part of
-	 *             <em>POST</em> body
-	 * @return success message
-	 * @throws UserRegistrationException if something goes wrong while registering
-	 *                                   user
-	 */
-	@PostMapping("/registeruser")
-	public ResponseEntity<String> registerUser(@RequestBody User user) throws UserRegistrationException {
-		userRegistrationServiceImpl.registerUser(Optional.of(user));
-		return new ResponseEntity<>("Registration successful", HttpStatus.OK);
-	}
+    /**
+     * <em>POST</em> method which will call {@link UserService#registerUser(User)} from
+     * {@link UserService} to register user for specifier categories
+     * news alerts.
+     *
+     * @param user instance of {@link User} which passed by user as a part of
+     *             <em>POST</em> body
+     * @return success message wrappned in {@link ResponseEntity}
+     * @throws UserException if something goes wrong while registering
+     *                       user
+     */
+    @PostMapping("/registeruser")
+    public ResponseEntity<String> registerUser(@RequestBody User user) throws UserException {
+        userServiceImpl.registerUser(user);
+        return new ResponseEntity<>("Registration successful", HttpStatus.OK);
+    }
 }

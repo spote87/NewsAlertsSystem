@@ -1,12 +1,7 @@
-/**
- * 
- */
 package com.alert.news.repository;
 
-import java.io.IOException;
-
+import com.alert.news.model.OrganisationCampaign;
 import org.apache.thrift.transport.TTransportException;
-import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -17,48 +12,58 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.alert.news.model.OrganisationCampaign;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Session;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Shivaji Pote
- *
  */
-@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class OrganisationCampaignIntegrationTest {
-	
-	private static final String KEYSPACE_CREATION_QUERY = "CREATE KEYSPACE IF NOT EXISTS NewsAlerts WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor' : 3};";
 
-	private static final String KEYSPACE_ACTIVATE_QUERY = "USE NewsAlerts;";
+    @Autowired
+    private OrganisationCampaignRepository campaignRepository;
 
-	@Autowired
-	private OrganisationCampaignRepository campaignRepository;
-	
-	@Rule
-	public ExpectedException exception = ExpectedException.none();
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
-	@BeforeClass
-	public static void startCassandraEmbedded() throws TTransportException, IOException, InterruptedException {
-		EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-		final Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").withPort(9142).build();
-		log.info("Cassandra server started at 127.0.0.1:9142..");
-		final Session session = cluster.connect();
-		session.execute(KEYSPACE_CREATION_QUERY);
-		session.execute(KEYSPACE_ACTIVATE_QUERY);
-		log.info("Keyspace {} created and activated", "NewsAlerts");
-	}
+    @BeforeClass
+    public static void startCassandraEmbedded() throws TTransportException, IOException, InterruptedException {
+        CassandraUtils.startEmbeddedCassandraServer();
+    }
 
-	
-	@Test
-	public void testInsertCampaignDetailsIntoDatabase() {
-		final OrganisationCampaign campaign = new OrganisationCampaign("Test Org", "Test campaign", "Test campaign description", "Finance, Policies");
-		campaignRepository.insert(campaign);
-		
-		Assert.assertNotNull(campaignRepository.findById(Long.valueOf(1)));
-	}
+    @Test
+    public void testInsertCampaignDetailsIntoDatabase() {
+        final OrganisationCampaign campaign = new OrganisationCampaign("Test Org", "Test campaign",
+                "Test campaign description", Arrays.asList("Finance", "Policies"));
+        campaignRepository.insert(campaign);
+
+        Assert.assertNotNull(campaignRepository.findById(1L));
+    }
+
+    @Test
+    public void testFindByStatusNewReturnsListOfNewOrganisations() {
+        final OrganisationCampaign campaign = new OrganisationCampaign("Org1", "Ttile 1", "Description 1", Arrays.asList("Finance", "LIC"));
+        campaignRepository.insert(campaign);
+
+        final List<OrganisationCampaign> newCampaign = campaignRepository.findByStatus("new");
+        assertNotNull(newCampaign);
+        assertTrue(newCampaign.size() > 1);
+    }
+
+    @Test
+    public void testFindByStatusNotNewShouldReturnEmptyList() {
+        final OrganisationCampaign campaign = new OrganisationCampaign("Org1", "Ttile 1", "Description 1", Arrays.asList("finance", "LIC"));
+        campaignRepository.insert(campaign);
+
+        final List<OrganisationCampaign> newCampaign = campaignRepository.findByStatus("Not New");
+        assertNotNull(newCampaign);
+        assertEquals(0, newCampaign.size());
+    }
 }

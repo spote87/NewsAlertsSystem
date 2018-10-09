@@ -3,7 +3,7 @@ CREATE KEYSPACE IF NOT EXISTS NewsAlerts WITH REPLICATION = {'class': 'SimpleStr
 CREATE TABLE IF NOT EXISTS NewsAlerts.user (
 	user_name text,
 	mobile_number bigint PRIMARY KEY,
-	subscription_categories text
+	subscription_categories list<text>
 ) WITH comment = 'User registrations';
 
 CREATE TABLE IF NOT EXISTS NewsAlerts.Organisation_Campaign (
@@ -11,5 +11,6 @@ CREATE TABLE IF NOT EXISTS NewsAlerts.Organisation_Campaign (
 	organisation_name text,
 	campaign_title text,
 	campaign_description text,
-	tagged_categories text
+	tagged_categories list<text>,
+	status text
 ) WITH comment = 'Organization campaigns';

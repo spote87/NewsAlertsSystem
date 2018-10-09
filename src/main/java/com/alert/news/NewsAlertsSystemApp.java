@@ -1,23 +1,25 @@
-/**
- * 
- */
 package com.alert.news;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * @author Shivaji Pote
+ * Spring boot application.
  *
+ * @author Shivaji Pote
  */
 @SpringBootApplication
+@EnableScheduling
 public class NewsAlertsSystemApp {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		SpringApplication.run(NewsAlertsSystemApp.class, args);
-	}
+    /**
+     * Starts spring boot application.
+     *
+     * @param args arguments
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(NewsAlertsSystemApp.class, args);
+    }
 
 }
