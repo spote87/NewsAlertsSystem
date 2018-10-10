@@ -1,5 +1,8 @@
 # **NewsAlertsSystem**
 This application sends news alerts to subscribed users. Since this is spring boot application, it can be launched by simply running NewsAlertsSystemApp.java
+
+This application uses `Twilio SMS API` to send messages. This is paid API, but we can test application using testing credentials. For more information, please visit https://www.twilio.com/. API documentation can be found at https://www.twilio.com/docs/sms/quickstart/java. 
+
 Set below 2 environment variables:
 
 1. TWILIO_ACCOUNT_SID : your_twilio_account_SID
