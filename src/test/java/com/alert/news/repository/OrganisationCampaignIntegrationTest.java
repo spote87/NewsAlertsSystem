@@ -1,11 +1,9 @@
 package com.alert.news.repository;
 
 import com.alert.news.model.OrganisationCampaign;
+import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.thrift.transport.TTransportException;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Shivaji Pote
@@ -27,6 +24,11 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 public class OrganisationCampaignIntegrationTest {
 
+    /**
+     * Organisation_Campaign table constant
+     */
+    private static final String ORGANISATION_CAMPAIGN_TABLE = "Organisation_Campaign";
+
     @Autowired
     private OrganisationCampaignRepository campaignRepository;
 
@@ -34,8 +36,29 @@ public class OrganisationCampaignIntegrationTest {
     public ExpectedException exception = ExpectedException.none();
 
     @BeforeClass
-    public static void startCassandraEmbedded() throws TTransportException, IOException, InterruptedException {
+    public static void startCassandraEmbedded() throws TTransportException, IOException, InterruptedException, ConfigurationException {
         CassandraUtils.startEmbeddedCassandraServer();
+    }
+
+    @AfterClass
+    public static void stopCassandraEmbedded() {
+        CassandraUtils.stopEmbeddedCassandraServer();
+    }
+
+    @Before
+    public void createTables() {
+        CassandraUtils.executeQuery(getCreateTableQuery());
+    }
+
+    private String getCreateTableQuery() {
+        final StringBuilder query = new StringBuilder();
+        query.append("CREATE TABLE IF NOT EXISTS NewsAlerts.").append(ORGANISATION_CAMPAIGN_TABLE).append("(id bigint primary key,organisation_name text,campaign_title text,campaign_description text,tagged_categories list<text>,status text) WITH comment = 'Organization campaigns';");
+        return query.toString();
+    }
+
+    @After
+    public void dropTable() {
+        CassandraUtils.dropTable(ORGANISATION_CAMPAIGN_TABLE);
     }
 
     @Test
@@ -51,17 +74,17 @@ public class OrganisationCampaignIntegrationTest {
     public void testFindByStatusNewReturnsListOfNewOrganisations() {
         final OrganisationCampaign campaign = new OrganisationCampaign("Org1", "Ttile 1", "Description 1", Arrays.asList("Finance", "LIC"));
         campaignRepository.insert(campaign);
-
+        // CassandraUtils.executeQuery("CREATE INDEX ON NewsAlerts.Organisation_Campaign (status)");
         final List<OrganisationCampaign> newCampaign = campaignRepository.findByStatus("new");
         assertNotNull(newCampaign);
-        assertTrue(newCampaign.size() > 1);
+        assertEquals(1, newCampaign.size());
     }
 
     @Test
     public void testFindByStatusNotNewShouldReturnEmptyList() {
         final OrganisationCampaign campaign = new OrganisationCampaign("Org1", "Ttile 1", "Description 1", Arrays.asList("finance", "LIC"));
         campaignRepository.insert(campaign);
-
+        // CassandraUtils.executeQuery("CREATE INDEX ON NewsAlerts.Organisation_Campaign (status)");
         final List<OrganisationCampaign> newCampaign = campaignRepository.findByStatus("Not New");
         assertNotNull(newCampaign);
         assertEquals(0, newCampaign.size());

@@ -11,6 +11,8 @@ import com.alert.news.exception.UserException;
 import com.alert.news.model.User;
 import com.alert.news.service.UserService;
 
+import javax.validation.Valid;
+
 /**
  * This is REST controller for registering users to different categories to get
  * news alerts.
@@ -38,7 +40,7 @@ public class UserRegistrationController {
      *                       user
      */
     @PostMapping("/registeruser")
-    public ResponseEntity<String> registerUser(@RequestBody User user) throws UserException {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody User user) throws UserException {
         userServiceImpl.registerUser(user);
         return new ResponseEntity<>("Registration successful", HttpStatus.OK);
     }

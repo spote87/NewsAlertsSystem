@@ -2,9 +2,9 @@ package com.alert.news.configuration;
 
 import javax.annotation.PostConstruct;
 
+import com.datastax.driver.core.ProtocolVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
@@ -14,7 +14,6 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
  */
 @Configuration
 @EnableCassandraRepositories
-@PropertySource(value = {"classpath:cassandra.properties"})
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
     /**
@@ -75,6 +74,12 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     @Override
     public String[] getEntityBasePackages() {
         return new String[]{basePackages};
+    }
+
+
+    @Override
+    protected ProtocolVersion getProtocolVersion() {
+        return ProtocolVersion.V3;
     }
 
 }

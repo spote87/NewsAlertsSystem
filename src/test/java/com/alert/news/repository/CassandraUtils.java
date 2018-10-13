@@ -1,8 +1,10 @@
 package com.alert.news.repository;
 
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ProtocolVersion;
 import com.datastax.driver.core.Session;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 
@@ -19,14 +21,32 @@ class CassandraUtils {
 
     private static final String KEYSPACE_ACTIVATE_QUERY = "USE NewsAlerts;";
 
-    static void startEmbeddedCassandraServer() throws InterruptedException, IOException, TTransportException {
+    private static Session session;
+
+    static void startEmbeddedCassandraServer() throws InterruptedException, IOException, TTransportException, ConfigurationException {
         EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-        final Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").withPort(9142).build();
-        log.info("Cassandra server started at 127.0.0.1:9142..");
-        final Session session = cluster.connect();
+        final Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").withPort(9142).withProtocolVersion(ProtocolVersion.V3).build();
+        session = cluster.connect();
+        log.info("Cassandra server started at 127.0.0.1:9042..");
         session.execute(KEYSPACE_CREATION_QUERY);
         session.execute(KEYSPACE_ACTIVATE_QUERY);
         log.info("Keyspace {} created and activated", "NewsAlerts");
+        Thread.sleep(5000);
     }
 
+
+    static void stopEmbeddedCassandraServer() {
+        EmbeddedCassandraServerHelper.getSession();
+        EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
+    }
+
+    public static void executeQuery(final String query) {
+       session.execute(query);
+    }
+
+    public static void dropTable(final String tableName) {
+        final StringBuilder query = new StringBuilder();
+        query.append("DROP TABLE NewsAlerts.").append(tableName);
+        session.execute(query.toString());
+    }
 }

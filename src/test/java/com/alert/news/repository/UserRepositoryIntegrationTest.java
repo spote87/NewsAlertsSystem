@@ -2,10 +2,9 @@ package com.alert.news.repository;
 
 import com.alert.news.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.thrift.transport.TTransportException;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,8 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringRunner.class)
 public class UserRepositoryIntegrationTest {
 
+    private static final String USER_TABLE = "user";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -34,8 +35,29 @@ public class UserRepositoryIntegrationTest {
     public ExpectedException exception = ExpectedException.none();
 
     @BeforeClass
-    public static void startCassandraEmbedded() throws TTransportException, IOException, InterruptedException {
+    public static void startCassandraEmbedded() throws TTransportException, IOException, InterruptedException, ConfigurationException {
         CassandraUtils.startEmbeddedCassandraServer();
+    }
+
+    @AfterClass
+    public static void stopCassandraEmbedded() {
+        CassandraUtils.stopEmbeddedCassandraServer();
+    }
+
+    @Before
+    public void createTables() {
+        CassandraUtils.executeQuery(getCreateTableQuery());
+    }
+
+    private String getCreateTableQuery() {
+        final StringBuilder query = new StringBuilder();
+        query.append("CREATE TABLE IF NOT EXISTS NewsAlerts.").append(USER_TABLE).append(" (user_name text,mobile_number bigint PRIMARY KEY,subscription_categories list<text>) WITH comment = 'User registrations';");
+        return query.toString();
+    }
+
+    @After
+    public void dropTable() {
+        CassandraUtils.dropTable(USER_TABLE);
     }
 
     @Test
@@ -53,7 +75,7 @@ public class UserRepositoryIntegrationTest {
         user.setSubscriptionCategories(Arrays.asList("Finance", "LIC"));
         user.setUserName("Shivaji");
         exception.expect(CassandraInvalidQueryException.class);
-        exception.expectMessage("Some partition key parts are missing: mobile_number");
+        exception.expectMessage("SessionCallback; CQL [INSERT INTO user (subscription_categories,user_name) VALUES (['Finance','LIC'],'Shivaji');]; Some partition key parts are missing: mobile_number; nested exception is com.datastax.driver.core.exceptions.InvalidQueryException: Some partition key parts are missing: mobile_number");
         userRepository.insert(user);
 
         assertNull(userRepository.findById(9310942803L));

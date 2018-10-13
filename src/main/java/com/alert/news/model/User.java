@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -19,12 +20,15 @@ import java.util.List;
 @ToString
 public class User {
 
+    @NotNull(message = "Mobile number cannot be null")
     @PrimaryKey("mobile_number")
     private Long mobileNumber;
 
+    @NotNull(message = "User name number cannot be null")
     @Column("user_name")
     private String userName;
 
+    @NotNull(message = "Subscription Categories cannot be null")
     @Column("subscription_categories")
     private List<String> subscriptionCategories;
 
