@@ -1,15 +1,15 @@
 package com.alert.news.model;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This is model class for organization campaign.
@@ -41,6 +41,7 @@ public class OrganisationCampaign {
     /**
      * name of the organisation
      */
+    @NotNull(message = "Organisation name cannot be null")
     @Column("organisation_name")
     private String orgnisationName;
 
@@ -53,12 +54,14 @@ public class OrganisationCampaign {
     /**
      * description of the campaign
      */
+    @NotNull(message = "Campaign description cannot be null")
     @Column("campaign_description")
     private String campaignDescription;
 
     /**
      * Campaign categories
      */
+    @NotNull(message = "Tagged categories cannot be null")
     @Column("tagged_categories")
     private List<String> taggedCategories;
 

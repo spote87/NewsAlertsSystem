@@ -1,15 +1,14 @@
 package com.alert.news.web;
 
+import com.alert.news.exception.UserException;
+import com.alert.news.model.User;
+import com.alert.news.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.alert.news.exception.UserException;
-import com.alert.news.model.User;
-import com.alert.news.service.UserService;
 
 import javax.validation.Valid;
 
@@ -26,7 +25,7 @@ public class UserRegistrationController {
      * user registration service instance
      */
     @Autowired
-    private UserService userServiceImpl;
+    private UserService userService;
 
     /**
      * <em>POST</em> method which will call {@link UserService#registerUser(User)} from
@@ -41,7 +40,7 @@ public class UserRegistrationController {
      */
     @PostMapping("/registeruser")
     public ResponseEntity<String> registerUser(@Valid @RequestBody User user) throws UserException {
-        userServiceImpl.registerUser(user);
+        userService.registerUser(user);
         return new ResponseEntity<>("Registration successful", HttpStatus.OK);
     }
 }

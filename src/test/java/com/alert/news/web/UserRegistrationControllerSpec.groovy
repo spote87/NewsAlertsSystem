@@ -1,6 +1,5 @@
 package com.alert.news.web
 
-
 import com.alert.news.service.UserService
 import groovy.json.JsonOutput
 import org.apache.http.HttpStatus
@@ -23,7 +22,7 @@ class UserRegistrationControllerSpec extends Specification {
     @Autowired
     private UserService userService
 
-    def "user registration rest service returns status ok and success message when passed correct data"() {
+    def "/registeruser endpoint should return status ok and success message when correct data is passed"() {
         given:
         Map request = [
                 mobileNumber          : '+919370912801',
@@ -38,9 +37,10 @@ class UserRegistrationControllerSpec extends Specification {
         response.status == HttpStatus.SC_OK
         and:
         response.contentAsString == "Registration successful"
+        1 * userService.registerUser(_)
     }
 
-    def "user registration rest service should throw error when mandatory parameter 'mobileNumber' is not passed"() {
+    def "/registeruser endpoint should throw error when mandatory parameter 'mobileNumber' is not passed"() {
         given:
         Map request = [
                 mobileNumber          : '+919370912801',
@@ -51,10 +51,12 @@ class UserRegistrationControllerSpec extends Specification {
         def response = mockMvc.perform(MockMvcRequestBuilders.post('/registeruser').contentType(ContentType.APPLICATION_JSON.toString()).content(JsonOutput.toJson(request))).andReturn().response
 
         then:
-        response.status == 400
+        response.status == HttpStatus.SC_BAD_REQUEST
+        and:
+        0 * userService.registerUser(_)
     }
 
-    def "user registration rest service should throw error when mandatory parameter 'user name' is not passed"() {
+    def "/registeruser endpoint should throw error when mandatory parameter 'user name' is not passed"() {
         given:
         Map request = [
                 mobileNumber: '+919370912801',
@@ -65,10 +67,12 @@ class UserRegistrationControllerSpec extends Specification {
         def response = mockMvc.perform(MockMvcRequestBuilders.post('/registeruser').contentType(ContentType.APPLICATION_JSON.toString()).content(JsonOutput.toJson(request))).andReturn().response
 
         then:
-        response.status == 400
+        response.status == HttpStatus.SC_BAD_REQUEST
+        and:
+        0 * userService.registerUser(_)
     }
 
-    def "user registration rest service should throw error when mandatory parameter 'subscription categories' is not passed"() {
+    def "/registeruser endpoint should throw error when mandatory parameter 'subscription categories' is not passed"() {
         given:
         Map request = [
                 userName              : 'shivaji.pote',
@@ -79,8 +83,11 @@ class UserRegistrationControllerSpec extends Specification {
         def response = mockMvc.perform(MockMvcRequestBuilders.post('/registeruser').contentType(ContentType.APPLICATION_JSON.toString()).content(JsonOutput.toJson(request))).andReturn().response
 
         then:
-        response.status == 400
+        response.status == HttpStatus.SC_BAD_REQUEST
+        and:
+        0 * userService.registerUser(_)
     }
+
 
     @TestConfiguration
     static class StubConfig {
@@ -88,7 +95,8 @@ class UserRegistrationControllerSpec extends Specification {
 
         @Bean
         UserService userService() {
-            return detachedMockFactory.Stub(UserService)
+            return detachedMockFactory.Mock(UserService.class)
         }
     }
+
 }

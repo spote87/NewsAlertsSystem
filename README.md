@@ -29,8 +29,8 @@ This is POST request. We need to pass user details in request body.
     Organisations can publish their campaigns by calling below service.
     
 	
-	 URI :  /NewsAlertsSystem/registercampain
-	 e.g: 	http://localhost:8080/NewsAlertsSystem/registercampain
+	 URI :  /NewsAlertsSystem/registercampaign
+	 e.g: 	http://localhost:8080/NewsAlertsSystem/registercampaign
  
 This is POST request. We need to pass campaign details in request body
 	
