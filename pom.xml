@@ -8,7 +8,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>news-alert</groupId>
-    <artifactId>NewsAlertsSystem</artifactId>
+    <artifactId>news-alerts-system</artifactId>
     <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>NewsAlertSystem Maven Webapp</name>
