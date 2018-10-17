@@ -1,16 +1,11 @@
 package com.alert.news.repository;
 
+import com.alert.news.TestConfiguration;
 import com.alert.news.model.OrganisationCampaign;
-import org.apache.cassandra.exceptions.ConfigurationException;
-import org.apache.thrift.transport.TTransportException;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,9 +15,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author Shivaji Pote
  */
-@SpringBootTest
-@RunWith(SpringRunner.class)
-public class OrganisationCampaignIntegrationTest {
+public class OrganisationCampaignIntegrationTest extends TestConfiguration {
 
     /**
      * Organisation_Campaign table constant
@@ -34,16 +27,6 @@ public class OrganisationCampaignIntegrationTest {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
-
-    @BeforeClass
-    public static void startCassandraEmbedded() throws TTransportException, IOException, InterruptedException, ConfigurationException {
-        CassandraUtils.startEmbeddedCassandraServer();
-    }
-
-    @AfterClass
-    public static void stopCassandraEmbedded() {
-        CassandraUtils.stopEmbeddedCassandraServer();
-    }
 
     @Before
     public void createTables() {

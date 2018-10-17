@@ -1,16 +1,14 @@
 package com.alert.news.repository;
 
+import com.alert.news.TestConfiguration;
 import com.alert.news.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.cassandra.exceptions.ConfigurationException;
 import org.apache.thrift.transport.TTransportException;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.cassandra.CassandraInvalidQueryException;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -22,9 +20,7 @@ import static org.junit.Assert.assertNull;
  * @author Shivaji Pote
  */
 @Slf4j
-@SpringBootTest
-@RunWith(SpringRunner.class)
-public class UserRepositoryIntegrationTest {
+public class UserRepositoryIntegrationTest extends TestConfiguration {
 
     private static final String USER_TABLE = "user";
 

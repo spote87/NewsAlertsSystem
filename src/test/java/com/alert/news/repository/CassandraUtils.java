@@ -11,7 +11,7 @@ import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import java.io.IOException;
 
 @Slf4j
-class CassandraUtils {
+public class CassandraUtils {
 
     private CassandraUtils() {
         throw new IllegalStateException("Cannot instantiate this class");
@@ -23,7 +23,7 @@ class CassandraUtils {
 
     private static Session session;
 
-    static void startEmbeddedCassandraServer() throws InterruptedException, IOException, TTransportException, ConfigurationException {
+    public static void startEmbeddedCassandraServer() throws InterruptedException, IOException, TTransportException, ConfigurationException {
         EmbeddedCassandraServerHelper.startEmbeddedCassandra();
         final Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").withPort(9142).withProtocolVersion(ProtocolVersion.V3).build();
         session = cluster.connect();
@@ -31,11 +31,11 @@ class CassandraUtils {
         session.execute(KEYSPACE_CREATION_QUERY);
         session.execute(KEYSPACE_ACTIVATE_QUERY);
         log.info("Keyspace {} created and activated", "NewsAlerts");
-        Thread.sleep(5000);
+        //Thread.sleep(5000);
     }
 
 
-    static void stopEmbeddedCassandraServer() {
+    public static void stopEmbeddedCassandraServer() {
         EmbeddedCassandraServerHelper.getSession();
         EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
     }

@@ -1,33 +1,27 @@
 package com.alert.news.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.test.context.junit4.SpringRunner;
-
+import com.alert.news.TestConfiguration;
 import com.alert.news.exception.OrganisationCampaignException;
 import com.alert.news.model.OrganisationCampaign;
 import com.alert.news.repository.OrganisationCampaignRepository;
 import com.alert.news.service.OrganisationCampaignService;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.context.ApplicationEventPublisher;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Shivaji Pote
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class OrganisationCampainServiceImplTest {
+public class OrganisationCampainServiceImplTest extends TestConfiguration {
 
     private static final String STATUS_NEW = "New";
 

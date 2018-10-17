@@ -1,29 +1,23 @@
 package com.alert.news.service.impl;
 
-import java.util.Arrays;
-import java.util.Optional;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
+import com.alert.news.TestConfiguration;
 import com.alert.news.exception.UserException;
 import com.alert.news.model.User;
 import com.alert.news.repository.UserRepository;
 import com.alert.news.service.UserService;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import java.util.Arrays;
 
 /**
  * @author Shivaji Pote
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class UserServiceImplTest {
+public class UserServiceImplTest extends TestConfiguration {
 
     @InjectMocks
     private UserService userServiceImpl = new UserServiceImpl();
